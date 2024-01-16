@@ -3,6 +3,7 @@ This is the grid module. It contains the Grid class and its associated methods.
 """
 
 import random
+import numpy as np
 
 class Grid():
     """
@@ -57,8 +58,12 @@ class Grid():
         """
         Checks is the current state of the grid is sorte and returns the answer as a boolean.
         """
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        for i in range(self.m):
+            for j in range(self.n):
+                if self.state[i][j] != j+1 + i*self.n:
+                    return False
+        return True
+
 
     def swap(self, cell1, cell2):
         """
@@ -70,7 +75,8 @@ class Grid():
             The two cells to swap. They must be in the format (i, j) where i is the line and j the column number of the cell. 
         """
         # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        self.state[cell1[0]][cell1[1]], self.state[cell2[0]][cell2[1]] = self.state[cell2[0]][cell2[1]], self.state[cell1[0]][cell1[1]]
+        return None
 
     def swap_seq(self, cell_pair_list):
         """
@@ -83,7 +89,10 @@ class Grid():
             So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """
         # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        
+        for i in range(0,len(cell_pair_list),2):
+            for j in range(1,len(cell_pair_list),2):
+                self.swap(cell_pair_list[i],cell_pair_list[j])
 
     @classmethod
     def grid_from_file(cls, file_name): 
