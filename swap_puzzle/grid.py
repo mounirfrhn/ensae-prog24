@@ -90,9 +90,8 @@ class Grid():
         """
         # TODO: implement this function (and remove the line "raise NotImplementedError").
         
-        for i in range(0,len(cell_pair_list),2):
-            for j in range(1,len(cell_pair_list),2):
-                self.swap(cell_pair_list[i],cell_pair_list[j])
+        for pair in cell_pair_list:            
+                self.swap(pair[0],pair[1])
 
     @classmethod
     def grid_from_file(cls, file_name): 
