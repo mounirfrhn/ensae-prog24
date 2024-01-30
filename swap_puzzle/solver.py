@@ -31,8 +31,8 @@ class Solver(Grid):
                  if self.find_index(number)[0]>correct_row:
                       for k in range(self.find_index(number)[0]-correct_row):
                             self.swap(self.find_index(number),(self.find_index(number)[0]-k-1,self.find_index(number)[1]))
-                 if self.find_index(number)[0]>correct_row:
-                     for k in range(self.find_index(correct_row - number)[0]):
+                 if self.find_index(number)[0]<correct_row:
+                     for k in range(correct_row - self.find_index(number)[0]):
                             self.swap(self.find_index(number),(self.find_index(number)[0]+k+1,self.find_index(number)[1]))          
               
 
@@ -50,8 +50,8 @@ class Solver(Grid):
         # NOTE: you can add other methods and subclasses as much as necessary. The only thing imposed is the format of the solution returned.
         # raise NotImplementedError
  
-a=Solver(3,3,[[1,2,3],[5,4,8],[9,7,6]])
+a=Solver(3,4,[[12,11,10,9],[8,7,6,5],[4,3,2,1]])
 
-for k in range(1,10):
+for k in range(1,13):
      a.correct_spot(k)
 print(a)
