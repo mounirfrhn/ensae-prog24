@@ -52,6 +52,8 @@ class Solver(Grid):
  
 a=Solver(3,4,[[12,11,10,9],[8,7,6,5],[4,3,2,1]])
 
+#commentaire
+
 for k in range(1,13):
      a.correct_spot(k)
 print(a)
