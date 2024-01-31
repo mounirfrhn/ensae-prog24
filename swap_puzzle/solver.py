@@ -46,7 +46,7 @@ class Solver(Grid):
                      for k in range(correct_row - self.find_index(number)[0]):
                             self.swap(self.find_index(number),(self.find_index(number)[0]+k+1,self.find_index(number)[1])) 
                             swap_list.append((self.find_index(number),(self.find_index(number)[0]+k+1,self.find_index(number)[1])))    
-         print(swap_list)
+         return swap_list
                    
 
  
@@ -60,8 +60,17 @@ class Solver(Grid):
         # TODO: implement this function (and remove the line "raise NotImplementedError").
         # NOTE: you can add other methods and subclasses as much as necessary. The only thing imposed is the format of the solution returned.
         # raise NotImplementedError
+        
+        path = []
+
+        for i in range(1,self.n*self.m+1):
+            tup_list = self.correct_spot(i)
+            for tup in tup_list:
+                 path.append(tup)
+        
+        return path
+             
  
 a=Solver(2,2,[[4,3],[2,1]])
-for k in range(1,5):
-    a.correct_spot(k)
-print(a)
+
+print(a.get_solution())
