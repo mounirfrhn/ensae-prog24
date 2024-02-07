@@ -3,7 +3,8 @@ This is the grid module. It contains the Grid class and its associated methods.
 """
 
 import random
-#import numpy as np
+import numpy as np
+import matplotlib.pyplot as plt
 from itertools import permutations
 
 class Grid():
@@ -59,11 +60,7 @@ class Grid():
         """
         Checks is the current state of the grid is sorte and returns the answer as a boolean.
         """
-        for i in range(self.m):
-            for j in range(self.n):
-                if self.state[i][j] != j+1 + i*self.n:
-                    return False
-        return True
+        return self.state == Grid(self.m,self.n, []).state
 
 
     def swap(self, cell1, cell2):
@@ -134,5 +131,35 @@ class Grid():
                 initial_state[i_line] = line_state
             grid = Grid(m, n, initial_state)
         return grid
+    
+    def plot_grid(self):
+        """
+        Takes a list of lists as input and plots it using matplotlib as a grid without color fill.
+        Each cell is smaller compared to the previous plot.
+        """
+        # Convert the list of lists to a 2D NumPy array
+        matrix = np.array(self.state)
 
+        nrows, ncols = matrix.shape
+        fig, ax = plt.subplots(figsize=(ncols, nrows))  # Set figure size based on the number of rows and columns
+
+        # Create a table to display the matrix
+        table = plt.table(
+            cellText=matrix,
+            loc='center',
+            cellLoc='center',
+            bbox=[0, 0, 1, 1]  # Use full extent of the axes, making cells smaller if necessary
+        )
+
+        # Style the table
+        table.auto_set_font_size(False)  # Prevent auto-setting of font-size
+        table.set_fontsize(14)  # Small font size for table text
+        table.scale(1, 1.5)  # Increase cell height a bit
+        
+        # Turn off the axis
+        ax.axis('off')
+
+        # Adjust layout to make room for the table:
+        plt.tight_layout()
+        plt.show()
 
