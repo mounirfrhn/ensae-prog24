@@ -1,6 +1,14 @@
+import numpy as np 
+from itertools import permutations
+from grid import Grid
+
 """
 This is the graph module. It contains a minimalistic Graph class.
 """
+
+
+
+
 
 class Graph:
     """
@@ -100,33 +108,26 @@ class Graph:
 
         visited = []
         queue = [[src]]
-
         if src == dst:
             return("same node")
-        
         while queue:
             path = queue.pop(0)
-            
             node = path[-1]
-
             if node not in visited:
                 neighbours = self.graph[node]
-
                 for neighbor in neighbours:
                     new_path = list(path)
                     new_path.append(neighbor)
                     queue.append(new_path)
-
                     if neighbor == dst:
                         return("The shortest path from {} to {} is : {}".format(src,dst,new_path))
-
                 visited.append(node)
-        
         return("no path between {} and {}".format(src,dst))
-
+    
 
 
     @classmethod
+    
     def graph_from_file(cls, file_name):
         """
         Reads a text file and returns the graph as an object of the Graph class.

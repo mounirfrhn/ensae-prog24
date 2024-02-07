@@ -4,6 +4,7 @@ This is the grid module. It contains the Grid class and its associated methods.
 
 import random
 #import numpy as np
+from itertools import permutations
 
 class Grid():
     """
@@ -95,6 +96,16 @@ class Grid():
         
         for pair in cell_pair_list:            
                 self.swap(pair[0],pair[1])
+
+    def permutations_to_grids(self):
+        numbers_list = range(1,self.n*self.m+1)
+        perms = permutations(numbers_list)
+        grids = []
+
+        for perm in perms:
+            grids.append(tuple(tuple(perm[i * self.m:(i + 1) * self.m] for i in range(self.n))))
+        
+        return grids
 
     @classmethod
     def grid_from_file(cls, file_name): 
