@@ -55,6 +55,7 @@ class Grid():
         Returns a representation of the grid with number of rows and columns.
         """
         return f"<grid.Grid: m={self.m}, n={self.n}>"
+    
 
     def is_sorted(self):
         """
@@ -100,9 +101,10 @@ class Grid():
         grids = []
 
         for perm in perms:
-            grids.append(tuple(tuple(perm[i * self.m:(i + 1) * self.m] for i in range(self.n))))
-        
+            grids.append(list(list(perm[i * self.m:(i + 1) * self.m] for i in range(self.n))))
         return grids
+    
+    
 
     @classmethod
     def grid_from_file(cls, file_name): 
@@ -198,6 +200,3 @@ class Grid():
             for j in range(0,self.n):
                 final_list.append(self.possible_moves((i,j)))
         return [couple for liste in final_list for couple in liste]
-
-a=Grid(3,3,[[1,4,7],[2,3,9],[6,5,8]])
-print(a.grid_possible_moves())
