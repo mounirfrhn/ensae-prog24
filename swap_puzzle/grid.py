@@ -101,7 +101,7 @@ class Grid():
         grids = []
 
         for perm in perms:
-            grids.append(list(list(perm[i * self.m:(i + 1) * self.m] for i in range(self.n))))
+            grids.append(tuple(tuple(perm[i * self.m:(i + 1) * self.m] for i in range(self.n))))
         return grids
     
     
