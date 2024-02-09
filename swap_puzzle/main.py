@@ -1,7 +1,7 @@
 
 
-
 #------------ Imports ------------
+
 from grid import Grid
 from graph import Graph
 
@@ -19,20 +19,9 @@ def convert_tuple_to_grid_object(tup):
         grid.append(list(line))
     return Grid(len(grid),len(grid[0]),grid)
 
-def swap_grid_tuple(tup,swap):
-    grid = Grid(len(tup),len(tup[0]),convert_tuple_to_grid_object(tup))
-    grid.swap(swap[0],swap[1])
-    return convert_grid_object_to_tuple(grid)
-
-
-
-#def swap_grid_tuple(grid_tup,swap):
-    
-
-
 #------------ Program -------------
 
-grid_to_sort = Grid(2,2,[[1,2],[3,4]])
+grid_to_sort = Grid(2,2,[[4,2],[3,1]])
 
 """
 Construction of the graph:
@@ -51,14 +40,19 @@ then  : graph.add_edge(grid_1, grid2)
 
 graph = Graph(grid_to_sort.permutations_to_grids())
 
-# for node in graph.graph:
+for node in graph.graph:
 
-#     node_grid = convert_tuple_to_grid_object(node)
-#     node_possible_moves = node_grid.grid_possible_moves()
+    node_grid = convert_tuple_to_grid_object(node)
+    node_possible_moves = node_grid.grid_possible_moves()
 
-#     for move in node_possible_moves:
-#         grid_2 = swap_grid_tuple(node,move)
-#         if (((node,grid_2) not in graph.edges) or ((grid_2,node) not in graph.edges)):
-#             graph.add_edge(node,grid_2)
+    for move in node_possible_moves:
+        grid = convert_tuple_to_grid_object(node)
+        grid.swap(move[0],move[1])
+        grid_2 = convert_grid_object_to_tuple(grid)
+        if (((node,grid_2) not in graph.edges) or ((grid_2,node) not in graph.edges)):
+            graph.add_edge(node,grid_2)
 
-print(graph.nodes)
+src = convert_grid_object_to_tuple(grid_to_sort)
+dst = convert_grid_object_to_tuple(Grid(grid_to_sort.m,grid_to_sort.n,[]))
+
+print(graph.bfs(src,dst))
