@@ -193,9 +193,11 @@ class Grid():
             return list_of_possible_moves
     
     def grid_possible_moves(self):
+        final_list=[]
         for i in range(0,self.m):
             for j in range(0,self.n):
-                print(self.possible_moves((i,j)))
+                final_list.append(self.possible_moves((i,j)))
+        return [couple for liste in final_list for couple in liste]
 
 a=Grid(3,3,[[1,4,7],[2,3,9],[6,5,8]])
 print(a.grid_possible_moves())
