@@ -163,3 +163,39 @@ class Grid():
         plt.tight_layout()
         plt.show()
 
+    def possible_moves(self,cell):      #tells if a move is possible, in order to be able to build the graph of all possible nodes for a given grid and the way to access it
+        list_of_possible_moves=[]
+        upward_cell=(cell[0]-1,cell[1])
+        downward_cell=(cell[0]+1,cell[1])
+        leftward_cell=(cell[0],cell[1]-1)
+        rightward_cell=(cell[0],cell[1]+1)
+        if abs(cell[0])>=self.m or abs(cell[1])>=self.n:
+            print("not possible")
+        else:
+            if cell[0]==0 and cell[1]==0:
+                list_of_possible_moves=[(cell,downward_cell),(cell,rightward_cell)]
+            if cell[0]==0 and cell[1]!=0 and cell[1]!= self.n -1:
+                list_of_possible_moves=[(cell,downward_cell),(cell,leftward_cell),(cell,rightward_cell)]
+            if cell[0]==0 and cell[1]==self.n -1:
+                list_of_possible_moves=[(cell,downward_cell),(cell,leftward_cell)]
+            if cell[0]!=0 and cell[1]==0:
+                list_of_possible_moves=[(cell,upward_cell),(cell,downward_cell),(cell,rightward_cell)]
+            if cell[0]!=0 and cell[1]==self.n -1:
+                list_of_possible_moves=[(cell,upward_cell),(cell,downward_cell),(cell,leftward_cell)]
+            if cell[0]==self.m -1 and cell[1]==0:
+                list_of_possible_moves=[(cell,upward_cell),(cell,rightward_cell)]
+            if cell[0]==self.m -1 and cell[1]!=0 and cell[1]!=self.n -1:
+                list_of_possible_moves=[(cell,upward_cell),(cell,leftward_cell),(cell,rightward_cell)]
+            if cell[0]==self.m -1 and cell[1]==self.n -1:
+                list_of_possible_moves=[(cell,upward_cell),(cell,leftward_cell)]
+            if cell[0]!=0 and cell[0]!=self.m-1 and cell[1]!=0 and cell[1]!=self.n -1:
+                list_of_possible_moves=[(cell,upward_cell),(cell,downward_cell),(cell,leftward_cell),(cell,rightward_cell)]
+            return list_of_possible_moves
+    
+    def grid_possible_moves(self):
+        for i in range(0,self.m):
+            for j in range(0,self.n):
+                print(self.possible_moves((i,j)))
+
+a=Grid(3,3,[[1,4,7],[2,3,9],[6,5,8]])
+print(a.grid_possible_moves())
