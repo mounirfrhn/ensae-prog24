@@ -4,6 +4,7 @@
 
 from grid import Grid
 from graph import Graph
+from graph import a_star
 
 #------------ Functions -----------
 
@@ -55,4 +56,8 @@ for node in graph.graph:
 src = convert_grid_object_to_tuple(grid_to_sort)
 dst = convert_grid_object_to_tuple(Grid(grid_to_sort.m,grid_to_sort.n,[]))
 
-print(graph.bfs(src,dst))
+#print(graph.bfs(src,dst))
+
+grid_to_sort = Grid(2,2,[[4,2],[3,1]])
+grille_triée = Grid(2,2,[])
+a_star(graph,grid_to_sort,grille_triée)
