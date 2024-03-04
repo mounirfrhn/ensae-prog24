@@ -154,7 +154,17 @@ class Graph:
     
 #==================================== A* algorithm ====================================
     
-    def heuristic(graph1, graph2):    #Euclid's heuristic was chosen
-        gap=0
-        for i in range (1, graph1.m*graph1.n):
-            x1=find_inde
+    def distance(graph):    #distance from a given grid to destination (euclid's)
+        dist=0
+        for i in range (1, graph.m*graph.n):
+            coord1=graph.find_index(i)
+            coord2=graph.find_index_when_sorted(i)
+            gap=np.sqrt((coord2[0] - coord1[0])**2 + (coord2[1] - coord1[1])**2)
+            dist+=gap
+        return dist
+    
+    def a_star(self,src,dst):
+        raise NotImplementedError
+    
+#EUCLID
+    
