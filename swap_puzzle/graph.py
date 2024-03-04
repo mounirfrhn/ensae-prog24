@@ -1,7 +1,7 @@
 import numpy as np 
 from itertools import permutations
 from grid import Grid
-
+from solver import Solver
 """
 This is the graph module. It contains a minimalistic Graph class.
 """
@@ -154,4 +154,7 @@ class Graph:
     
 #==================================== A* algorithm ====================================
     
-    def a_star()
+    def heuristic(graph1, graph2):    #Euclid's heuristic was chosen
+        gap=0
+        for i in range (1, graph1.m*graph1.n):
+            x1=find_inde
