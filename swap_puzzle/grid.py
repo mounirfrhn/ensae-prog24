@@ -55,15 +55,13 @@ class Grid():
         Returns a representation of the grid with number of rows and columns.
         """
         return f"<grid.Grid: m={self.m}, n={self.n}>"
-    
 
     def is_sorted(self):
         """
         Checks is the current state of the grid is sorte and returns the answer as a boolean.
         """
         return self.state == Grid(self.m,self.n, []).state
-
-
+    
     def swap(self, cell1, cell2):
         """
         Implements the swap operation between two cells. Raises an exception if the swap is not allowed.
@@ -93,18 +91,7 @@ class Grid():
         # TODO: implement this function (and remove the line "raise NotImplementedError").
         
         for pair in cell_pair_list:            
-                self.swap(pair[0],pair[1])
-
-    def permutations_to_grids(self):
-        numbers_list = range(1,self.n*self.m+1)
-        perms = permutations(numbers_list)
-        grids = []
-
-        for perm in perms:
-            grids.append(tuple(tuple(perm[i * self.m:(i + 1) * self.m] for i in range(self.n))))
-        return grids
-    
-    
+                self.swap(pair[0],pair[1])    
 
     @classmethod
     def grid_from_file(cls, file_name): 
@@ -165,6 +152,17 @@ class Grid():
         plt.tight_layout()
         plt.show()
 
+#==================================== Creation of the Graph ====================================
+
+    def permutations_to_grids(self):
+        numbers_list = range(1,self.n*self.m+1)
+        perms = permutations(numbers_list)
+        grids = []
+
+        for perm in perms:
+            grids.append(tuple(tuple(perm[i * self.m:(i + 1) * self.m] for i in range(self.n))))
+        return grids
+    
     def possible_moves(self,cell):      #tells if a move is possible, in order to be able to build the graph of all possible nodes for a given grid and the way to access it
         list_of_possible_moves=[]
         upward_cell=(cell[0]-1,cell[1])
@@ -200,3 +198,4 @@ class Grid():
             for j in range(0,self.n):
                 final_list.append(self.possible_moves((i,j)))
         return [couple for liste in final_list for couple in liste]
+
