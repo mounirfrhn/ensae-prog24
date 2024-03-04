@@ -6,10 +6,6 @@ from grid import Grid
 This is the graph module. It contains a minimalistic Graph class.
 """
 
-
-
-
-
 class Graph:
     """
     A class representing undirected graphs as adjacency lists. 
@@ -124,10 +120,7 @@ class Graph:
                 visited.append(node)
         return("no path between {} and {}".format(src,dst))
     
-
-
     @classmethod
-    
     def graph_from_file(cls, file_name):
         """
         Reads a text file and returns the graph as an object of the Graph class.
@@ -158,8 +151,7 @@ class Graph:
                 else:
                     raise Exception("Format incorrect")
         return graph
-
-
-
-
-
+    
+#==================================== A* algorithm ====================================
+    
+    def a_star()
