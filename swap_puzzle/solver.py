@@ -5,18 +5,6 @@ class Solver(Grid):
     """
     A solver class, to be implemented.
     """
-    #Finds the position of an integer n in a grid
-    def find_index(self,n):
-        for i in range (self.m):
-                for j in range (self.n):
-                    if n ==self.state[i][j]:
-                        return (i,j) 
-
-    #finds the index of an integer "number" if the grid was sorted                
-    def find_index_when_sorted(self,number):
-        a=Solver(self.m,self.n,[])
-        return  a.find_index(number)
-    
 
     def correct_spot(self,number):
          swap_list=[]
@@ -73,4 +61,4 @@ class Solver(Grid):
  
 a=Solver(2,2,[[4,3],[2,1]])
 
-print(a.get_solution())
+#print(a.get_solution())

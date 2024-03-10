@@ -1,77 +1,156 @@
 from grid import Grid
 from graph import Graph
-from main import convert_grid_object_to_tuple,convert_tuple_to_grid_object, a_star
-import copy
+from main import *
+from solver import Solver
+import time
+import random
 
-ligne = 3
-colonne = 2
+#================================= Exemples =============================
 
-grid = Grid(ligne,colonne,[])
-graph = Graph(grid.permutations_to_grids()) # Initialistion du graphe
+# -------- Exemple d'une grid carrée m = 2 ; n = 2 --------
 
-for node in graph.graph:
-    node_grid = convert_tuple_to_grid_object(node)
-    possible_moves = []
-    for i in range(node_grid.m):                 #on itère sur les lignes
-        for j in range(node_grid.n):             #on itère sur les colonne
+grid_to_sort = Grid(2,2,[[4,2],[3,1]])
+sorted_grid = Grid(2,2,[])
 
-            if i==0:                        #première ligne
-                if j == 0:                  #première colonne
-                    possible_moves.append([(i,j),(i+1,j)])      #bas
-                    possible_moves.append([(i,j),(i,j+1)])      #droite
-                elif j == grid.n-1:         #dernière colonne
-                    possible_moves.append([(i,j),(i+1,j)])      #bas
-                    possible_moves.append([(i,j),(i,j-1)])      #gauche
-                else:                       #entre les deux
-                    possible_moves.append([(i,j),(i+1,j)])      #bas
-                    possible_moves.append([(i,j),(i,j+1)])      #droite
-                    possible_moves.append([(i,j),(i,j-1)])      #gauche
+# --------- Algorithme naif ---------
 
-            elif i==grid.m-1:               #dernière ligne
-                if j == 0:                  #première colonne
-                    possible_moves.append([(i,j),(i-1,j)])      #haut
-                    possible_moves.append([(i,j),(i,j+1)])      #droite
-                elif j == grid.n-1:         #dernière colonne
-                    possible_moves.append([(i,j),(i-1,j)])      #haut
-                    possible_moves.append([(i,j),(i,j-1)])      #gauche
-                else:                       #entre les deux
-                    possible_moves.append([(i,j),(i-1,j)])      #haut
-                    possible_moves.append([(i,j),(i,j+1)])      #droite
-                    possible_moves.append([(i,j),(i,j-1)])      #gauche
+ex_1_naif_start_time = time.time()
+grid_to_sort_solver = Solver(2,2,[[4,2],[3,1]])
+print(grid_to_sort_solver.get_solution())
+ex_1_naif_end_time = time.time()
+print("temps necessaire avec algo naif : ", ex_1_naif_end_time-ex_1_naif_start_time)
+print("\n")
 
-            else:                           #entre les deux
-                if j == 0:                  #première colonne
-                    possible_moves.append([(i,j),(i-1,j)])      #haut
-                    possible_moves.append([(i,j),(i+1,j)])      #bas
-                    possible_moves.append([(i,j),(i,j+1)])      #droite
-                elif j == grid.n-1:         #dernière colonne
-                    possible_moves.append([(i,j),(i-1,j)])      #haut
-                    possible_moves.append([(i,j),(i+1,j)])      #bas
-                    possible_moves.append([(i,j),(i,j-1)])      #gauche
-                else:                       #entre les deux
-                    possible_moves.append([(i,j),(i-1,j)])      #haut
-                    possible_moves.append([(i,j),(i+1,j)])      #bas
-                    possible_moves.append([(i,j),(i,j+1)])      #droite
-                    possible_moves.append([(i,j),(i,j-1)])      #gauche
-    # for move in possible_moves:
-    #     print(move)
-    grid_stock = node_grid.state
+""" Resultats
+[((1, 0), (1, 1)), ((0, 0), (1, 0)), ((1, 0), (1, 1))]
+temps necessaire avec algo naif :  0.00014281272888183594
+"""
 
-    for move in possible_moves:
-        grid_copy2 = copy.deepcopy(grid_stock)  # list
-        grid2 = Grid(ligne,colonne,grid_copy2)            #grid object
-        grid2.swap(move[0],move[1])             #method
-        grid1_tuple = convert_grid_object_to_tuple(Grid(ligne,colonne,grid_stock))
-        grid2_tuple = convert_grid_object_to_tuple(grid2)
-        if (((grid1_tuple,grid2_tuple) not in graph.edges) or ((grid1_tuple,grid2_tuple) not in graph.edges)):
-            graph.add_edge(grid1_tuple,grid2_tuple)
+# -------- BFS --------
 
-for node in graph.graph:                            #supprime les doublons car probleme dans les lignes précédentes mais pas de solutions trouvés
-    voisins_avec_doublons = graph.graph[node]
-    voisins_sans_doublons = list(set(graph.graph[node]))
-    graph.graph[node] = voisins_sans_doublons
+ex_1_bfs_start_time = time.time()
+graph = creation_of_the_graph(2,2)
+grid_to_sort_tuple = convert_grid_object_to_tuple(grid_to_sort)
+grid_triée_tuple = convert_grid_object_to_tuple(sorted_grid)
+ex_1_bfs_end_time = time.time()
+print(bfs(graph,grid_to_sort_tuple,grid_triée_tuple))
+print("temps necessaire avec BFS : ", ex_1_bfs_end_time-ex_1_bfs_start_time)
+print("\n")
+
+""" Resultats
+The shortest path from ((4, 2), (3, 1)) to ((1, 2), (3, 4)) is : [((4, 2), (3, 1)), ((4, 1), (3, 2)), ((1, 4), (3, 2)), ((1, 2), (3, 4))]
+temps necessaire avec BFS :  0.0035398006439208984
+"""
+
+# -------- A* --------
+ex_1_a_star_start_time = time.time()
+graph = creation_of_the_graph(2,2)
+grid_to_sort_tuple = convert_grid_object_to_tuple(grid_to_sort)
+grid_triée_tuple = convert_grid_object_to_tuple(sorted_grid)
+ex_1_a_star_end_time = time.time()
+print(bfs(graph,grid_to_sort_tuple,grid_triée_tuple))
+print("temps necessaire avec A* : ", ex_1_a_star_end_time-ex_1_a_star_start_time)
+print("\n")
+
+""" Resultats : 
+The shortest path from ((4, 2), (3, 1)) to ((1, 2), (3, 4)) is : [((4, 2), (3, 1)), ((4, 1), (3, 2)), ((1, 4), (3, 2)), ((1, 2), (3, 4))]
+temps necessaire avec A* :  0.0033767223358154297
+"""
+
+# -------- Exemple d'une grid carrée m = 2 ; n = 3 --------
+
+grid_to_sort = Grid(2,3,[[4,6,1],[5,3,2]])
+sorted_grid = Grid(2,3,[])
+
+# --------- Algorithme naif ---------
+
+ex_1_naif_start_time = time.time()
+grid_to_sort_solver = Solver(2,3,[[4,6,1],[5,3,2]])
+print(grid_to_sort_solver.get_solution())
+ex_1_naif_end_time = time.time()
+print("temps necessaire avec algo naif : ", ex_1_naif_end_time-ex_1_naif_start_time)
+print("\n")
+
+""" Resultats
+"""
+
+# -------- BFS -------
+
+ex_1_bfs_start_time = time.time()
+graph = creation_of_the_graph(2,3)
+grid_to_sort_tuple = convert_grid_object_to_tuple(grid_to_sort)
+grid_triée_tuple = convert_grid_object_to_tuple(sorted_grid)
+ex_1_bfs_end_time = time.time()
+print(bfs(graph,grid_to_sort_tuple,grid_triée_tuple))
+print("temps necessaire avec BFS : ", ex_1_bfs_end_time-ex_1_bfs_start_time)
+print("\n")
+
+""" Resultats
+The shortest path from ((4, 2), (3, 1)) to ((1, 2), (3, 4)) is : [((4, 2), (3, 1)), ((4, 1), (3, 2)), ((1, 4), (3, 2)), ((1, 2), (3, 4))]
+temps necessaire avec BFS :  0.0035398006439208984
+"""
+
+# -------- A* --------
+ex_1_a_star_start_time = time.time()
+graph = creation_of_the_graph(2,3)
+grid_to_sort_tuple = convert_grid_object_to_tuple(grid_to_sort)
+grid_triée_tuple = convert_grid_object_to_tuple(sorted_grid)
+ex_1_a_star_end_time = time.time()
+print(bfs(graph,grid_to_sort_tuple,grid_triée_tuple))
+print("temps necessaire avec A* : ", ex_1_a_star_end_time-ex_1_a_star_start_time)
+print("\n")
+
+""" Resultats : 
+The shortest path from ((4, 2), (3, 1)) to ((1, 2), (3, 4)) is : [((4, 2), (3, 1)), ((4, 1), (3, 2)), ((1, 4), (3, 2)), ((1, 2), (3, 4))]
+temps necessaire avec A* :  0.0033767223358154297
+"""
+
+# -------- Exemple d'une grid carrée m = 4 ; n = 4 --------
+
+m, n = 3, 4 
+total_elements = m * n 
+permutation = random.sample(range(1, total_elements + 1), total_elements)
+grid = [permutation[i * n:(i + 1) * n] for i in range(m)]
 
 
-src = Grid(2,2,[[2,4],[1,3]])
-dst = Grid(2,2,[])
-print(a_star(graph,src,dst))
+grid_to_sort = Grid(4,4,[[4,6,1],[5,3,2]])
+sorted_grid = Grid(4,4,[])
+
+# --------- Algorithme naif ---------
+
+ex_1_naif_start_time = time.time()
+grid_to_sort_solver = Solver(2,3,[[4,6,1],[5,3,2]])
+print(grid_to_sort_solver.get_solution())
+ex_1_naif_end_time = time.time()
+print("temps necessaire avec algo naif : ", ex_1_naif_end_time-ex_1_naif_start_time)
+print("\n")
+
+""" Resultats
+"""
+
+# -------- BFS -------
+
+ex_1_bfs_start_time = time.time()
+graph = creation_of_the_graph(2,3)
+grid_to_sort_tuple = convert_grid_object_to_tuple(grid_to_sort)
+grid_triée_tuple = convert_grid_object_to_tuple(sorted_grid)
+ex_1_bfs_end_time = time.time()
+print(bfs(graph,grid_to_sort_tuple,grid_triée_tuple))
+print("temps necessaire avec BFS : ", ex_1_bfs_end_time-ex_1_bfs_start_time)
+print("\n")
+
+""" Resultats
+"""
+
+# -------- A* --------
+ex_1_a_star_start_time = time.time()
+graph = creation_of_the_graph(2,3)
+grid_to_sort_tuple = convert_grid_object_to_tuple(grid_to_sort)
+grid_triée_tuple = convert_grid_object_to_tuple(sorted_grid)
+ex_1_a_star_end_time = time.time()
+print(bfs(graph,grid_to_sort_tuple,grid_triée_tuple))
+print("temps necessaire avec A* : ", ex_1_a_star_end_time-ex_1_a_star_start_time)
+print("\n")
+
+""" Resultats : 
+"""
