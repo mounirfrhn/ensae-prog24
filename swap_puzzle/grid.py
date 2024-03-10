@@ -72,6 +72,9 @@ class Grid():
             The two cells to swap. They must be in the format (i, j) where i is the line and j the column number of the cell. 
         """
         # TODO: implement this function (and remove the line "raise NotImplementedError").
+        cell1_stock = cell1
+        cell2_stock = cell2
+
         if (cell1[0]==cell2[0] and abs(cell1[1]-cell2[1])==1) or (cell1[1]==cell2[1] and abs(cell1[0]-cell2[0])==1):
             self.state[cell1[0]][cell1[1]], self.state[cell2[0]][cell2[1]] = self.state[cell2[0]][cell2[1]], self.state[cell1[0]][cell1[1]]
             return None
@@ -91,7 +94,19 @@ class Grid():
         # TODO: implement this function (and remove the line "raise NotImplementedError").
         
         for pair in cell_pair_list:            
-                self.swap(pair[0],pair[1])    
+                self.swap(pair[0],pair[1])   
+
+        #Finds the position of an integer n in a grid
+    def find_index(self,n):
+        for i in range (self.m):
+                for j in range (self.n):
+                    if n ==self.state[i][j]:
+                        return (i,j) 
+
+    #finds the index of an integer "number" if the grid was sorted                
+    def find_index_when_sorted(self,number):
+        a=Grid(self.m,self.n,[])
+        return  a.find_index(number)
 
     @classmethod
     def grid_from_file(cls, file_name): 
@@ -160,7 +175,7 @@ class Grid():
         grids = []
 
         for perm in perms:
-            grids.append(tuple(tuple(perm[i * self.m:(i + 1) * self.m] for i in range(self.n))))
+            grids.append(tuple(tuple(perm[i * self.n:(i + 1) * self.n] for i in range(self.m))))
         return grids
     
     def possible_moves(self,cell):      #tells if a move is possible, in order to be able to build the graph of all possible nodes for a given grid and the way to access it
@@ -192,6 +207,54 @@ class Grid():
                 list_of_possible_moves=[(cell,upward_cell),(cell,downward_cell),(cell,leftward_cell),(cell,rightward_cell)]
             return list_of_possible_moves
     
+    def create_graph(self):
+        nodes = self.permutations_to_grids()
+        for node in nodes:
+            possible_moves = []
+            for i in range(self.m):                 #on itère sur les lignes
+                for j in range(self.n):             #on itère sur les colonne
+
+                    if i==0:                        #première ligne
+                        if j == 0:                  #première colonne
+                            possible_moves.append([(i,j),(i,j+1)])      #bas
+                            possible_moves.append([(i,j),(i+1,j)])      #droite
+                        elif j == self.n-1:         #dernière colonne
+                            possible_moves.append([(i,j),(i,j+1)])      #bas
+                            possible_moves.append([(i,j),(i-1,j)])      #gauche
+                        else:                       #entre les deux
+                            possible_moves.append([(i,j),(i,j+1)])      #bas
+                            possible_moves.append([(i,j),(i+1,j)])      #droite
+                            possible_moves.append([(i,j),(i-1,j)])      #gauche
+
+                    elif i==self.m-1:               #dernière ligne
+                        if j == 0:                  #première colonne
+                            possible_moves.append([(i,j),(i,j-1)])      #haut
+                            possible_moves.append([(i,j),(i+1,j)])      #droite
+                        elif j == self.n-1:         #dernière colonne
+                            possible_moves.append([(i,j),(i,j-1)])      #haut
+                            possible_moves.append([(i,j),(i-1,j)])      #gauche
+                        else:                       #entre les deux
+                            possible_moves.append([(i,j),(i,j-1)])      #haut
+                            possible_moves.append([(i,j),(i+1,j)])      #droite
+                            possible_moves.append([(i,j),(i-1,j)])      #gauche
+
+                    else:                           #entre les deux
+                        if j == 0:                  #première colonne
+                            possible_moves.append([(i,j),(i,j-1)])      #haut
+                            possible_moves.append([(i,j),(i,j+1)])      #bas
+                            possible_moves.append([(i,j),(i+1,j)])      #droite
+                        elif j == self.n-1:         #dernière colonne
+                            possible_moves.append([(i,j),(i,j-1)])      #haut
+                            possible_moves.append([(i,j),(i,j+1)])      #bas
+                            possible_moves.append([(i,j),(i-1,j)])      #gauche
+                        else:                       #entre les deux
+                            possible_moves.append([(i,j),(i,j-1)])      #haut
+                            possible_moves.append([(i,j),(i,j+1)])      #bas
+                            possible_moves.append([(i,j),(i+1,j)])      #droite
+                            possible_moves.append([(i,j),(i-1,j)])      #gauche
+
+
+
     def grid_possible_moves(self):
         final_list=[]
         for i in range(0,self.m):
