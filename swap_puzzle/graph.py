@@ -3,7 +3,6 @@ from itertools import permutations
 from grid import Grid
 from solver import Solver
 import heapq
-from node import Node
 
 """
 This is the graph module. It contains a minimalistic Graph class.
